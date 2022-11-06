@@ -1,8 +1,13 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import {NavData} from './NavData'
-function Sidebar() {
+import {NavDataVoter} from './NavDataVoter'
+import {NavDataAdmin} from './NavDataAdmin'
+
+function Sidebar({isAdmin}) {
     const [activeIndex,setActiveIndex] = useState(0)
+
+    const NavData = isAdmin? NavDataAdmin: NavDataVoter
+
     const checkActive = (element) =>{
         let activeClass = activeIndex === NavData.indexOf(element) ? 'nav-item p-2 active bg-primary' : 'nav-item p-2'
         return activeClass

@@ -2,7 +2,7 @@ import React from 'react'
 
 function Vote() {
   return (
-    <div>Vote</div>
+    <div className='text-white'>Vote</div>
   )
 }
 

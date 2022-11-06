@@ -3,8 +3,6 @@ import {useState, useEffect} from 'react'
 import Web3 from 'web3';
 import DistributedVoting from './truffle_abis/DistributedVoting'
 import Layout from './components/Layout';
-import { Route, Routes } from 'react-router-dom';
-
 
 
 
@@ -16,7 +14,7 @@ function App() {
   const [account, setAccount]=useState([])
   const [contractData,setContractData]=useState(initialContractData)
   const [isAdmin,setIsAdmin] = useState(false)
-
+  let isConnected = Boolean(account[0])
   useEffect(() => {
     loadContract()
   },[])
@@ -29,7 +27,7 @@ function App() {
   //Checks if currently connected address is admin
   const checkAdmin = async () => {
     let admin=false
-    if(Boolean(account[0])){
+    if(isConnected){
       admin = await contractData.distributedVoting.methods.checkAdmin(account).call()
     }
     setIsAdmin(admin)
@@ -54,10 +52,11 @@ function App() {
   
   return (
     <>
-      <Routes>
-        <Route path='/' element={<Layout account={account} setAccount={setAccount} isAdmin={isAdmin} distributedVoting={contractData.distributedVoting}/>}>
-        </Route>
-      </Routes>
+      <Layout 
+        account={account} 
+        setAccount={setAccount} 
+        isAdmin={isAdmin} 
+        distributedVoting={contractData.distributedVoting}/>
     </>
   );
 }

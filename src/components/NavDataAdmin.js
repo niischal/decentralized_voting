@@ -1,6 +1,6 @@
 import { BsClipboard, BsClipboardCheck, BsHouse, BsNewspaper } from 'react-icons/bs'
 
-export  const NavData = [
+export  const NavDataAdmin = [
   {
     id:1,
     to:'/',
@@ -9,15 +9,15 @@ export  const NavData = [
   },
   {
     id:2,
-    to:'/Register',
+    to:'/Election',
     icon: <BsClipboard className='me-2'/>,
-    name: 'Register'
+    name: 'Election'
   },
   {
     id:3,
-    to:'/Vote',
+    to:'/BallotView',
     icon: <BsNewspaper className='me-2'/>,
-    name: 'Vote'
+    name: 'Ballot View'
   },
   {
     id:4,

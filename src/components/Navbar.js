@@ -3,7 +3,7 @@ import WalletConnect from './WalletConnect'
 import * as BsIcons from 'react-icons/bs'
 import Sidebar from './Sidebar'
 
-function Navbar({account,setAccount}) {
+function Navbar({account,setAccount,isAdmin}) {
   return (
     <>
       <header className='navbar fixed-top navbar-dark shadow p-0' style={{backgroundColor:'#343a40', height:'50px'}}>
@@ -17,7 +17,8 @@ function Navbar({account,setAccount}) {
           </li>
         </ul>
       </header>
-      <Sidebar/> 
+      {Boolean(account[0])? <Sidebar isAdmin={isAdmin}/> : <></> }
+       
     </>  
   )
 }
