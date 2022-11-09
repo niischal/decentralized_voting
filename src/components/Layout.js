@@ -5,14 +5,14 @@ import Register from '../pages/Register';
 import Vote from '../pages/Vote';
 import Result from '../pages/Result'
 import ConnectWallet from '../pages/ConnectWallet';
-import Election from '../pages/Election';
+import Candidates from '../pages/Candidates';
 import BallotView from '../pages/BallotView';
 import VoterHomePage from '../pages/VoterHomePage';
 import AdminHomePage from '../pages/AdminHomePage';
 import NotFound from '../pages/NotFound'
+import Loading from '../pages/Loading';
 
-function Layout({account, setAccount, isAdmin, distributedVoting}) {
-  
+function Layout({account, setAccount, isAdmin, contractData,electionState,setElectionState}) {
   let isConnected = Boolean(account[0])
 
   const notConnectedPage= (<Routes>
@@ -21,19 +21,19 @@ function Layout({account, setAccount, isAdmin, distributedVoting}) {
                           </Routes>)
   const voterPages= (<div className='col-10 text-center mt-5 bg-dark text-white'>
                       <Routes>
-                        <Route path='/' element={<VoterHomePage/>}/>
-                        <Route path='/Register' element={<Register/>}/>
-                        <Route path='/Vote' element={<Vote/>}/>
-                        <Route path='/Result' element={<Result/>}/>
+                        <Route path='/' element={<VoterHomePage contractData={contractData} electionState={electionState}/>}/>
+                        <Route path='/Register' element={<Register contractData={contractData} electionState={electionState}/>}/>
+                        <Route path='/Vote' element={<Vote contractData={contractData} electionState={electionState}/>}/>
+                        <Route path='/Result' element={<Result contractData={contractData} electionState={electionState}/>}/>
                         <Route path='*' element={<NotFound/>}/>
                       </Routes>
                     </div>)
   const adminPages= (<div className='col-10 text-center mt-5 bg-dark text-white'>
                       <Routes>
-                        <Route path='/' element={<AdminHomePage/>}/>
-                        <Route path='/Election' element={<Election/>}/>
-                        <Route path='/BallotView' element={<BallotView/>}/>
-                        <Route path='/Result' element={<Result/>}/>
+                        <Route path='/' element={<AdminHomePage account={account} contractData={contractData} electionState={electionState} setElectionState={setElectionState}/>}/>
+                        <Route path='/Candidates' element={<Candidates contractData={contractData} electionState={electionState}/>}/>
+                        <Route path='/BallotView' element={<BallotView contractData={contractData} electionState={electionState}/>}/>
+                        <Route path='/Result' element={<Result contractData={contractData}/>} electionState={electionState}/>
                         <Route path='*' element={<NotFound/>}/>
                       </Routes>
                     </div>)
@@ -43,7 +43,7 @@ function Layout({account, setAccount, isAdmin, distributedVoting}) {
       <div className='container-fluid' style={{height:'100%'}}>
         <div className="row">
           <Navbar account={account} setAccount={setAccount} isAdmin={isAdmin}/>
-          <>
+          <>{contractData.loading ? <Routes><Route to="/Loading" element={<Loading/>}/></Routes>:<></>}
             {!isConnected
             ? notConnectedPage
             : isAdmin? adminPages : voterPages

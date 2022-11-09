@@ -9,9 +9,9 @@ export  const NavDataAdmin = [
   },
   {
     id:2,
-    to:'/Election',
+    to:'/Candidates',
     icon: <BsClipboard className='me-2'/>,
-    name: 'Election'
+    name: 'Candidates'
   },
   {
     id:3,
