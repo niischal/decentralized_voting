@@ -10,6 +10,7 @@ function Result({account,contractData}) {
     if(!contractData.loading){
       const candidates = await contractData.distributedVoting.methods.getAllCandidates().call({from:account})
       setCandidateList(candidates)
+      candidateList.sort((a,b)=> b.voteCount - a.voteCount)
     }
   }
   
