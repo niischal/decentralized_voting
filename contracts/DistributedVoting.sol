@@ -11,6 +11,7 @@ contract DistributedVoting {
     struct Voter {
         address voterAddress;
         string voterName;
+        bool voterExists;
         bool registered;
         bool voted;
     }
@@ -57,12 +58,12 @@ contract DistributedVoting {
     }
 
     modifier running() {
-        require(state == State.Running, "Election not Started");
+        require(state == State.Running, "Election is Running");
         _;
     }
 
     modifier ended() {
-        require(state == State.Ended, "Election not Started");
+        require(state == State.Ended, "Election Ended");
         _;
     }
 
@@ -88,7 +89,11 @@ contract DistributedVoting {
         return state;
     }
 
-    function addCandidate(string memory name) public notStarted {
+    function addCandidate(string memory name)
+        public
+        candidateNotExists(name)
+        notStarted
+    {
         candidates[name].candidateName = name;
         candidates[name].exists = true;
         candidates[name].voteCount = 0;
@@ -98,7 +103,7 @@ contract DistributedVoting {
     function getCandidate(string memory name)
         public
         view
-        candidateNotExists(name)
+        candidateExists(name)
         returns (Candidate memory candidate)
     {
         candidate = candidates[name];
@@ -127,8 +132,10 @@ contract DistributedVoting {
     }
 
     function registerVoter(string memory name) public notAdmin notStarted {
+        require(voters[msg.sender].voterExists == false, "Already Registered");
         voters[msg.sender].voterAddress = msg.sender;
         voters[msg.sender].voterName = name;
+        voters[msg.sender].voterExists=true
         voters[msg.sender].registered = false;
         voters[msg.sender].voted = false;
         voterList.push(voters[msg.sender]);
@@ -138,7 +145,7 @@ contract DistributedVoting {
         voters[_address].registered = true;
     }
 
-    function getVoters() public view onlyAdmin returns (Voter[] memory) {
+    function getAllVoters() public view onlyAdmin returns (Voter[] memory) {
         return voterList;
     }
 

@@ -11,6 +11,7 @@ import VoterHomePage from '../pages/VoterHomePage';
 import AdminHomePage from '../pages/AdminHomePage';
 import NotFound from '../pages/NotFound'
 import Loading from '../pages/Loading';
+import VoterList from '../pages/VoterList'
 
 function Layout({account, setAccount, isAdmin, contractData,electionState,setElectionState}) {
   let isConnected = Boolean(account[0])
@@ -21,9 +22,9 @@ function Layout({account, setAccount, isAdmin, contractData,electionState,setEle
                           </Routes>)
   const voterPages= (<div className='col-10 text-center mt-5 bg-dark text-white'>
                       <Routes>
-                        <Route path='/' element={<VoterHomePage contractData={contractData} electionState={electionState}/>}/>
-                        <Route path='/Register' element={<Register contractData={contractData} electionState={electionState}/>}/>
-                        <Route path='/Vote' element={<Vote contractData={contractData} electionState={electionState}/>}/>
+                        <Route path='/' element={<VoterHomePage account={account} contractData={contractData} electionState={electionState}/>}/>
+                        <Route path='/Register' element={<Register account={account} contractData={contractData} electionState={electionState}/>}/>
+                        <Route path='/Vote' element={<Vote account={account} contractData={contractData} electionState={electionState}/>}/>
                         <Route path='/Result' element={<Result contractData={contractData} electionState={electionState}/>}/>
                         <Route path='*' element={<NotFound/>}/>
                       </Routes>
@@ -31,9 +32,10 @@ function Layout({account, setAccount, isAdmin, contractData,electionState,setEle
   const adminPages= (<div className='col-10 text-center mt-5 bg-dark text-white'>
                       <Routes>
                         <Route path='/' element={<AdminHomePage account={account} contractData={contractData} electionState={electionState} setElectionState={setElectionState}/>}/>
-                        <Route path='/Candidates' element={<Candidates contractData={contractData} electionState={electionState}/>}/>
-                        <Route path='/BallotView' element={<BallotView contractData={contractData} electionState={electionState}/>}/>
-                        <Route path='/Result' element={<Result contractData={contractData}/>} electionState={electionState}/>
+                        <Route path='/Candidates' element={<Candidates account={account} contractData={contractData} electionState={electionState}/>}/>
+                        <Route path='/VoterList' element={<VoterList account={account} contractData={contractData} electionState={electionState}/>}/>
+                        <Route path='/BallotView' element={<BallotView  account={account} contractData={contractData} electionState={electionState}/>}/>
+                        <Route path='/Result' element={<Result account={account} contractData={contractData}/>} electionState={electionState}/>
                         <Route path='*' element={<NotFound/>}/>
                       </Routes>
                     </div>)
