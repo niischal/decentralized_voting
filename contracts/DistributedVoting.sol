@@ -40,7 +40,7 @@ contract DistributedVoting {
 
     //modifiers
     modifier onlyAdmin() {
-        require(admins[msg.sender] == true);
+        require(admins[msg.sender] == true, "Not Admin");
         _;
     }
     modifier isVoter(address _address) {
@@ -53,17 +53,17 @@ contract DistributedVoting {
         _;
     }
     modifier notStarted() {
-        require(state == State.NotStarted, "Election not Started");
+        require(state == State.NotStarted, "Election already started");
         _;
     }
 
     modifier running() {
-        require(state == State.Running, "Election is Running");
+        require(state == State.Running, "Election has Ended");
         _;
     }
 
     modifier ended() {
-        require(state == State.Ended, "Election Ended");
+        require(state == State.Ended, "Election Running or not started");
         _;
     }
 
@@ -77,6 +77,10 @@ contract DistributedVoting {
     }
     modifier candidateNotExists(string memory name) {
         require(candidates[name].exists == false, "Candidate already exists");
+        _;
+    }
+    modifier voterNotExists(address _address) {
+        require(voters[_address].voterExists == false, "Already Registered");
         _;
     }
 
@@ -131,18 +135,57 @@ contract DistributedVoting {
         state = State.NotStarted;
     }
 
-    function registerVoter(string memory name) public notAdmin notStarted {
-        require(voters[msg.sender].voterExists == false, "Already Registered");
+    function registerVoter(string memory name)
+        public
+        notAdmin
+        notStarted
+        voterNotExists(msg.sender)
+    {
         voters[msg.sender].voterAddress = msg.sender;
         voters[msg.sender].voterName = name;
-        voters[msg.sender].voterExists=true
+        voters[msg.sender].voterExists = true;
         voters[msg.sender].registered = false;
         voters[msg.sender].voted = false;
         voterList.push(voters[msg.sender]);
     }
 
-    function verifyVoter(address _address) public onlyAdmin notStarted {
-        voters[_address].registered = true;
+    function indexOf(Voter storage searchedVoter)
+        private
+        view
+        returns (uint256)
+    {
+        for (uint256 i = 0; i < voterList.length - 1; i++) {
+            if (voterList[i].voterAddress == searchedVoter.voterAddress) {
+                return i;
+            }
+        }
+        return voterList.length + 1;
+    }
+
+    function removeFromArray(uint256 _index) private {
+        for (uint256 i = _index; i < voterList.length; i++) {
+            voterList[i] = voterList[i++];
+        }
+        voterList.pop();
+    }
+
+    function verifyVoter(address voter) public onlyAdmin notStarted {
+        require(voters[voter].voterExists == true, "Voter does not exists");
+        voters[voter].registered = true;
+
+        removeFromArray(indexOf(voters[voter]));
+        // uint256 _index = voterList.length + 1;
+        // for (uint256 i = 0; i < voterList.length; i++) {
+        //     if (voterList[i].voterAddress == voters[voter].voterAddress) {
+        //         _index = i;
+        //     }
+        // }
+        // for (uint256 i = _index; i < voterList.length - 1; i++) {
+        //     voterList[i] = voterList[i++];
+        // }
+        // voterList.pop();
+
+        voterList.push(voters[voter]);
     }
 
     function getAllVoters() public view onlyAdmin returns (Voter[] memory) {

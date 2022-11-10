@@ -4,7 +4,7 @@ function UnverifiedVoters({contractData,account,unverifiedVoters}) {
   const handleAccept = async (address) => {
     console.log('address', address)
     await contractData.distributedVoting.methods.verifyVoter(address).send({from:account})
-    console.log('address', await contractData.distributedVoting.methods.getVoter(address).call({from:account}))
+    console.log('address', await contractData.distributedVoting.methods.getAllVoters().call({from:account}))
   }
   return (
     <div>

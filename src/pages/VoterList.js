@@ -9,7 +9,6 @@ function VoterList({account,contractData}) {
   useEffect(()=>{
     getVoters()
     getSeperateVoterList()
-    if(!ListEmpty(voterList)) console.log('voterList', voterList)
   },[voterList.length])
 
 
@@ -60,9 +59,9 @@ function VoterList({account,contractData}) {
         </thead>
         <tbody className='text-white'>
           {ListEmpty(verifiedVoters)? <tr><td colSpan='2'>Voter List Empty</td></tr>
-            :verifiedVoters.verified.map((v) => {
+            :verifiedVoters.map((v) => {
              return( 
-              <tr key={v.address}>
+              <tr key={v.voterAddress}>
                 <td>{v.voterAddress}</td>
                 <td>{v.voterName}</td>
               </tr>
