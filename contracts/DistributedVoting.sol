@@ -209,5 +209,7 @@ contract DistributedVoting {
         }
         candidateList.pop();
         removeFromArray(indexOf(voters[msg.sender]));
+        voterList.push(voters[msg.sender]);
+        candidateList.push(candidates[name]);
     }
 }

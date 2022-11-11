@@ -3,7 +3,8 @@ import React, { useEffect, useState } from 'react'
 function AdminHomePage({account,contractData,electionState, setElectionState}) {
   const [stateText,setStateText] = useState({text:'',buttonText:<></>})
   useEffect(() => {
-    StateText()
+    getState()
+    getStateText()
     // eslint-disable-next-line
   },[electionState])
   const getState=async () => {
@@ -23,7 +24,7 @@ function AdminHomePage({account,contractData,electionState, setElectionState}) {
     await contractData.distributedVoting.methods.endElection().send({from:account})
     getState()
   }
-  const StateText = () => {
+  const getStateText = () => {
     let text='error',buttonText
     if (electionState.toString()==='0'){
       text = 'Not Started' 

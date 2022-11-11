@@ -8,9 +8,9 @@ function Result({account,contractData}) {
   
   const getCandidates=async () => {
     if(!contractData.loading){
-      const candidates = await contractData.distributedVoting.methods.getAllCandidates().call({from:account})
+      let candidates = await contractData.distributedVoting.methods.getAllCandidates().call({from:account})
+      console.log('candidates', candidates)
       setCandidateList(candidates)
-      candidateList.sort((a,b)=> b.voteCount - a.voteCount)
     }
   }
   
