@@ -4,7 +4,7 @@ function Result({account,contractData}) {
   const [candidateList,setCandidateList] = useState([])
   useEffect(() => {
     getCandidates()
-  }, [])
+  }, [candidateList.length])
   
   const getCandidates=async () => {
     if(!contractData.loading){

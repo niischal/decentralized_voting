@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import UnverifiedVoters from '../components/UnverifiedVoters'
 
 function VoterList({account,contractData}) {
-  const initialVoterList = {voters:[]}
   const [voterList,setVoterList] = useState([])
   const [verifiedVoters,setVerifiedVoter] = useState([])
   const [unverifiedVoters,setUnverifiedVoter] = useState([])

@@ -1,4 +1,4 @@
-import { BsClipboard, BsClipboardCheck, BsHouse,  BsNewspaper, BsPerson } from 'react-icons/bs'
+import { BsClipboard, BsClipboardCheck, BsHouse,  BsPerson } from 'react-icons/bs'
 
 export  const NavDataAdmin = [
   {
@@ -21,12 +21,6 @@ export  const NavDataAdmin = [
   },
   {
     id:4,
-    to:'/BallotView',
-    icon: <BsNewspaper className='me-2'/>,
-    name: 'Ballot View'
-  },
-  {
-    id:5,
     to:'/Result',
     icon: <BsClipboardCheck className='me-2'/>,
     name: 'Result'

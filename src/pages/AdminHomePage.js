@@ -14,7 +14,6 @@ function AdminHomePage({account,contractData,electionState, setElectionState}) {
     console.log('decentralizedVoting', contractData)
     await contractData.distributedVoting.methods.startElection().send({from:account})
     getState()
-
   }
   const resetElectionState =async () => {
     await contractData.distributedVoting.methods.resetElection().send({from:account})

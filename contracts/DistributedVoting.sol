@@ -114,12 +114,7 @@ contract DistributedVoting {
         return (candidate);
     }
 
-    function getAllCandidates()
-        public
-        view
-        onlyAdmin
-        returns (Candidate[] memory)
-    {
+    function getAllCandidates() public view returns (Candidate[] memory) {
         return (candidateList);
     }
 
@@ -200,5 +195,19 @@ contract DistributedVoting {
     {
         candidates[name].voteCount++;
         voters[msg.sender].voted = true;
+        uint256 _index = candidateList.length + 1;
+        for (uint256 i = 0; i < candidateList.length; i++) {
+            if (
+                keccak256(abi.encodePacked(candidateList[i].candidateName)) ==
+                keccak256(abi.encodePacked(candidates[name].candidateName))
+            ) {
+                _index = i;
+            }
+        }
+        for (uint256 i = _index; i < candidateList.length - 1; i++) {
+            candidateList[i] = candidateList[i++];
+        }
+        candidateList.pop();
+        removeFromArray(indexOf(voters[msg.sender]));
     }
 }

@@ -15,9 +15,9 @@ export  const NavDataVoter = [
   },
   {
     id:3,
-    to:'/Vote',
+    to:'/Ballot',
     icon: <BsNewspaper className='me-2'/>,
-    name: 'Vote'
+    name: 'Ballot'
   },
   {
     id:4,
