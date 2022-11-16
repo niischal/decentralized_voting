@@ -1,10 +1,12 @@
 import React from 'react'
 
-function UnverifiedVoters({contractData,account,unverifiedVoters}) {
+function UnverifiedVoters({contractData,account,unverifiedVoters,getVoters,getSeperateVoterList}) {
   const handleAccept = async (address) => {
     console.log('address', address)
     await contractData.distributedVoting.methods.verifyVoter(address).send({from:account})
     console.log('address', await contractData.distributedVoting.methods.getAllVoters().call({from:account}))
+    getVoters()
+    getSeperateVoterList()
   }
   return (
     <div>

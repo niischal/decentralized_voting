@@ -10,6 +10,7 @@ function Result({account,contractData}) {
     if(!contractData.loading){
       let candidates = await contractData.distributedVoting.methods.getAllCandidates().call({from:account})
       setCandidateList(candidates)
+      console.log('candidates', candidates)
     }
   }
   

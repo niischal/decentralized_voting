@@ -13,7 +13,7 @@ function VoterList({account,contractData}) {
 
   useEffect(() => {
     getSeperateVoterList()
-  },[verifiedVoters.length,unverifiedVoters.length])
+  },[verifiedVoters.length,unverifiedVoters.length,voterList.length])
   
   const getVoters=async () => {
     
@@ -43,7 +43,13 @@ function VoterList({account,contractData}) {
       <div className='container mt-5'>
        {ListEmpty(unverifiedVoters) 
        ? <></> 
-       : <UnverifiedVoters contractData={contractData} account={account} unverifiedVoters={unverifiedVoters}/>}
+       : <UnverifiedVoters 
+            contractData={contractData} 
+            account={account} 
+            unverifiedVoters={unverifiedVoters} 
+            getVoters={getVoters} 
+            getSeperateVoterList={getSeperateVoterList}
+          />}
       <h1 className='mt-5'>Verified Voters</h1>
       <table className="table text-white">
         <thead>

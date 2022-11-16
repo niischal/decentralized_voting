@@ -149,7 +149,7 @@ contract DistributedVoting {
         view
         returns (uint256)
     {
-        for (uint256 i = 0; i < voterList.length - 1; i++) {
+        for (uint256 i = 0; i < voterList.length; i++) {
             if (voterList[i].voterAddress == searchedVoter.voterAddress) {
                 return i;
             }
@@ -157,30 +157,12 @@ contract DistributedVoting {
         return voterList.length + 1;
     }
 
-    function removeFromArray(uint256 _index) private {
-        for (uint256 i = _index; i < voterList.length; i++) {
-            voterList[i] = voterList[i++];
-        }
-        voterList.pop();
-    }
-
     function verifyVoter(address voter) public onlyAdmin notStarted {
         require(voters[voter].voterExists == true, "Voter does not exists");
         voters[voter].registered = true;
 
-        removeFromArray(indexOf(voters[voter]));
-        // uint256 _index = voterList.length + 1;
-        // for (uint256 i = 0; i < voterList.length; i++) {
-        //     if (voterList[i].voterAddress == voters[voter].voterAddress) {
-        //         _index = i;
-        //     }
-        // }
-        // for (uint256 i = _index; i < voterList.length - 1; i++) {
-        //     voterList[i] = voterList[i++];
-        // }
-        // voterList.pop();
-
-        voterList.push(voters[voter]);
+        uint256 _index = indexOf(voters[voter]);
+        voterList[_index].registered = true;
     }
 
     function getAllVoters() public view onlyAdmin returns (Voter[] memory) {
@@ -192,24 +174,20 @@ contract DistributedVoting {
         candidateExists(name)
         notAdmin
         running
+        notVoted
     {
         candidates[name].voteCount++;
         voters[msg.sender].voted = true;
-        uint256 _index = candidateList.length + 1;
+
+        uint256 _index = indexOf(voters[msg.sender]);
+        voterList[_index].voted = true;
         for (uint256 i = 0; i < candidateList.length; i++) {
             if (
-                keccak256(abi.encodePacked(candidateList[i].candidateName)) ==
-                keccak256(abi.encodePacked(candidates[name].candidateName))
+                keccak256(bytes(candidateList[i].candidateName)) ==
+                keccak256(bytes(name))
             ) {
-                _index = i;
+                candidateList[i].voteCount++;
             }
         }
-        for (uint256 i = _index; i < candidateList.length - 1; i++) {
-            candidateList[i] = candidateList[i++];
-        }
-        candidateList.pop();
-        removeFromArray(indexOf(voters[msg.sender]));
-        voterList.push(voters[msg.sender]);
-        candidateList.push(candidates[name]);
     }
 }
